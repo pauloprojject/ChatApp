@@ -1,0 +1,22 @@
+<div class="align-box">
+  <mat-card id="login">
+    <p>NOME PROJETO</p>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Usuário</mat-label>
+      <input matInput type="text" [(ngModel)]="login.user" placeholder="Digite o seu usuário">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Senha</mat-label>
+      <input matInput type="password" [(ngModel)]="login.password" placeholder="Digite a sua senha">
+    </mat-form-field>
+
+    <div>
+      <button [disabled]="isDisabled()" (click)="authenticate()" mat-raised-button color="primary">Logar</button>
+      <hr>
+      <button (click)="Router('cadastrar')" mat-raised-button color="accent">Cadastrar</button>
+    </div>
+
+  </mat-card>
+</div>

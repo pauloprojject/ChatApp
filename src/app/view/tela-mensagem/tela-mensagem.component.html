@@ -1,0 +1,48 @@
+<div id="chat">
+
+  <div class="background">
+    <div id="left-box">
+      <!-- USER -->
+      <div id="user-box">
+        <img class="logo" *ngIf="usuarioLogado && usuarioLogado.logo !== ''" src={{usuarioLogado.logo}} alt="">
+        <p class="logo" *ngIf="usuarioLogado && usuarioLogado.logo === ''">{{usuarioLogado.username[0]}}</p>
+
+        <p *ngIf="usuarioLogado" class="username">{{usuarioLogado.username}}</p>
+        <button mat-fab color="primary" (click)="logout()">
+          <mat-icon>logout</mat-icon>
+        </button>
+      </div>
+      <!-- CHATS -->
+      <div id="pane-side">
+        <div class="chat-item" (click)="openChat(chatView.id, chatView.usuarios)" *ngFor="let chatView of chatsViews" [ngClass]="{active: chatView.active}">
+          <img class="logo" *ngIf="chatView.logo !== ''" src={{chatView.logo}} alt="">
+          <p class="logo" *ngIf="chatView.logo === ''">{{chatView.userLetter}}</p>
+          <div class="description">
+            <p class="title">{{chatView.nome_chat}}</p>
+            <p class="users">{{chatView.usuariosText}}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADD CHAT -->
+      <button mat-raised-button color="primary" id="add-chat">Adicionar Chat</button>
+    </div>
+
+    <!-- MENSAGENS -->
+    <div id="main">
+      <div *ngFor="let data of datas">
+        <mat-card class="data">{{data}}</mat-card>
+        <mat-card *ngFor="let mensagem of mensagensData(data)" [ngClass]="{'mymessage': isMessageMy(mensagem), 'message': !isMessageMy(mensagem) }">
+          <p class="username" *ngIf="!isMessageMy(mensagem)">{{getUserMessage(mensagem)}}</p>
+          <mat-card-content>{{mensagem.texto}}</mat-card-content>
+          <mat-card-footer>{{mensagem.datahora.split(" ")[1]}}</mat-card-footer>
+        </mat-card>
+      </div>
+      <div id="send-message">
+        <input type="text">
+        <button color="primary" mat-fab><mat-icon>send</mat-icon></button>
+      </div>
+    </div>
+  </div>
+
+</div>
