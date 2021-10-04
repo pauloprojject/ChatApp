@@ -130,11 +130,15 @@ export class TelaMensagemComponent implements OnInit {
 
     this.chatsViews = chatsViews;
     if(indexActive) {
-      this.chatsViews[indexActive].active = true;
-      this.mensagensActive = this.chatsViews[indexActive].mensagens;
+      if(this.chatsViews[indexActive]) {
+        this.chatsViews[indexActive].active = true;
+        this.mensagensActive = this.chatsViews[indexActive].mensagens;
+      }
     } else {
-      this.chatsViews[0].active = true;
-      this.mensagensActive = this.chatsViews[0].mensagens;
+      if(this.chatsViews[0]) {
+        this.chatsViews[0].active = true;
+        this.mensagensActive = this.chatsViews[0].mensagens;
+      }
     }
 
 
@@ -253,8 +257,8 @@ export class TelaMensagemComponent implements OnInit {
     if(!this.novoChat.logo)
       this.novoChat.logo = '';
 
-    if(this.novoChat.nome)
-      this.novoChat.nome = usuariosNotLogado[0].name;
+    if(!this.novoChat.nome)
+      this.novoChat.nome = `${this.usuarioLogado.username}-${usuariosNotLogado[0].username}`;
 
     const chat = new Chat();
     chat.logo = this.novoChat.logo;
@@ -269,10 +273,13 @@ export class TelaMensagemComponent implements OnInit {
       if(i === this.novoChat.usuarios.length-1) {
         window.alert("Novo Chat Criado");
         this.showAddChat = false;
+        this.criarChatButton = true;
 
         this.novoChat.logo = undefined;
         this.novoChat.nome = undefined;
         this.novoChat.usuarios = new Array();
+        this.novoChat.usuarios.push( this.usuarioLogado );
+        this.filtroNovoChat = this.usuarios.filter(u => u.id !== this.usuarioLogado.id);
       }
     });
   }
