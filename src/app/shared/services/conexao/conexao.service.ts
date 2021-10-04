@@ -28,5 +28,10 @@ export class ConexaoService {
     })).pipe(first()).toPromise();
   }
 
-
+  async inserir(conexao: Conexao): Promise<Conexao> {
+    return this.httpClient.post<Conexao>(this.URL_CONEXOES, conexao).pipe(catchError(() => {
+      window.alert("Erro de conexão ao tentar inserir a nova conexão");
+      return of(undefined);
+    })).pipe(first()).toPromise();
+  }
 }

@@ -26,6 +26,12 @@ export class MensagemService {
       window.alert("Erro de conexão ao tentar listar mensagens");
       return of(undefined);
     })).pipe(first()).toPromise();
+  }
 
+  async inserir(mensagem: Mensagem) : Promise<Mensagem> {
+    return this.httpClient.post<Mensagem>(this.URL_MENSAGENS, mensagem).pipe(catchError(() => {
+      window.alert("Erro de conexão ao tentar inserir mensagem");
+      return of(undefined);
+    })).pipe(first()).toPromise();
   }
 }

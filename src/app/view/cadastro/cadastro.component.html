@@ -22,6 +22,7 @@
       <input matInput type="password" [(ngModel)]="cadastro.repassword" placeholder="Confirme sua senha">
     </mat-form-field>
 
-    <button [disabled]="isDisabled()" (click)="cadastrar()" mat-raised-button color="primary">Logar</button>
+    <button class="register-button" [disabled]="isDisabled()" (click)="cadastrar()" mat-raised-button color="primary">Cadastrar</button>
+    <button (click)="backToLogin()" mat-raised-button color="accent">Voltar para tela de Login</button>
   </mat-card>
 </div>

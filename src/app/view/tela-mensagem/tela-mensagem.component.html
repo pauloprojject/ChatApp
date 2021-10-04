@@ -25,24 +25,77 @@
       </div>
 
       <!-- ADD CHAT -->
-      <button mat-raised-button color="primary" id="add-chat">Adicionar Chat</button>
+      <button (click)="addChat()" mat-raised-button color="primary" id="add-chat">Adicionar Chat</button>
     </div>
 
     <!-- MENSAGENS -->
     <div id="main">
-      <div *ngFor="let data of datas">
-        <mat-card class="data">{{data}}</mat-card>
-        <mat-card *ngFor="let mensagem of mensagensData(data)" [ngClass]="{'mymessage': isMessageMy(mensagem), 'message': !isMessageMy(mensagem) }">
-          <p class="username" *ngIf="!isMessageMy(mensagem)">{{getUserMessage(mensagem)}}</p>
-          <mat-card-content>{{mensagem.texto}}</mat-card-content>
-          <mat-card-footer>{{mensagem.datahora.split(" ")[1]}}</mat-card-footer>
-        </mat-card>
+      <div class="message-box">
+        <div *ngFor="let data of datas">
+          <mat-card class="data">{{data}}</mat-card>
+          <mat-card *ngFor="let mensagem of mensagensData(data)" [ngClass]="{'mymessage': isMessageMy(mensagem), 'message': !isMessageMy(mensagem) }">
+            <p class="username" *ngIf="!isMessageMy(mensagem)">{{getUserMessage(mensagem)}}</p>
+            <mat-card-content>{{mensagem.texto}}</mat-card-content>
+            <mat-card-footer>{{getHora(mensagem)}}</mat-card-footer>
+          </mat-card>
+        </div>
       </div>
       <div id="send-message">
-        <input type="text">
-        <button color="primary" mat-fab><mat-icon>send</mat-icon></button>
+        <input type="text" #newMesssage (keyup)="onKey($event,newMesssage)">
+        <button color="primary" mat-fab (click)="sendMessage(newMesssage)"><mat-icon>send</mat-icon></button>
       </div>
     </div>
   </div>
+</div>
 
+<!-- ADD CHAT -->
+<div *ngIf="showAddChat" #addChatBox (click)="eraseAddChat($event,addChatBox)" id="add-chat-box">
+  <mat-card>
+    <mat-card-content>
+      <div>
+        <img class="logo" *ngIf="novoChat.logo" src={{novoChat.logo}} alt="">
+        <p class="logo" *ngIf="novoChat.nome && !novoChat.logo">{{novoChat.nome[0]}}</p>
+        <p class="logo" *ngIf="!novoChat.nome && !novoChat.logo && !novoChat.nome">{{ getFirstUsernameLetter() }}</p>
+      </div>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Nome</mat-label>
+        <input [disabled]="novoChat.usuarios.length !== 1 && novoChat.usuarios.length <= 2" matInput type="text" [(ngModel)]="novoChat.nome" placeholder="Digite o nome do novo chat">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Usuários</mat-label>
+        <mat-chip-list #userList aria-label="Fruit selection">
+          <mat-chip
+            *ngFor="let usuario of novoChat.usuarios"
+            [selectable]="true"
+            [removable]="true"
+            (removed)="remove(usuario)">
+            {{usuario.username | titlecase}}
+            <button matChipRemove>
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip>
+          <input
+            placeholder="Digite um novo usuário..."
+            #userInput
+            [matAutocomplete]="auto"
+            [matChipInputFor]="userList"
+            [formControl]="userCtrl"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            (matChipInputTokenEnd)="add($event)"
+          >
+        </mat-chip-list>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+          <mat-option *ngFor="let usuario of filtroNovoChat" [value]="usuario.username">
+            {{usuario.username | titlecase}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+    </mat-card-content>
+    <mat-card-footer>
+      <button [disabled]="isDisabled()" (click)="criarChat()" color="primary" mat-raised-button>Criar chat</button>
+    </mat-card-footer>
+  </mat-card>
 </div>

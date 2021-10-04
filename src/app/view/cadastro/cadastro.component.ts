@@ -54,4 +54,8 @@ export class CadastroComponent implements OnInit {
     usuario.logo = "";
     this.usuarioService.inserir(usuario).then(res => window.alert("Usuario cadastro com sucesso."));
   }
+
+  public backToLogin(): void {
+    this.roedor.navigate(['']);
+  }
 }

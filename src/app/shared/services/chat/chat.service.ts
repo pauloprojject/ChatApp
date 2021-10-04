@@ -27,4 +27,12 @@ export class ChatService {
       return of(undefined);
     })).pipe(first()).toPromise();
   }
+
+  async inserir(chat: Chat): Promise<Chat> {
+    return this.httpClient.post<Chat>(this.URL_CHATS, chat).pipe(catchError(() => {
+      window.alert("Erro de conexão ao tentar inserir o novo chat");
+      return of(undefined);
+    })).pipe(first()).toPromise();
+  }
+
 }

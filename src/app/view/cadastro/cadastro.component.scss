@@ -25,6 +25,7 @@
       max-width: 220px;
       min-height: 300px;
       padding: 20px 15px;
+      border-radius: 15px;
 
       p {
         text-align: center;
@@ -33,6 +34,10 @@
 
       * {
         width: 100%;
+      }
+
+      .register-button {
+        margin-bottom: 10px;
       }
     }
   }
